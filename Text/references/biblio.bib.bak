@@ -1,0 +1,25 @@
+% Encoding: UTF-8
+
+@Book{CHAL,
+  author    = {Χρήστος Χαλδούπης},
+  title     = {Εισαγωγή στην ατμοσφαιρική φυσική},
+  year      = {2015},
+  publisher = {Σύνδεσμος Ελληνικών Ακαδημαϊκων Βιβλιοθηκών},
+}
+
+@Book{KAMPF,
+  author    = {Jochen Kämpf},
+  title     = {Ocean Modeling for Beginners, Using Open-Source Software},
+  year      = {2009},
+  publisher = {Springer},
+}
+
+@Book{NMOOP,
+  author    = {Kantha Clayson, Lakshmi Carol},
+  title     = {Numerical Models of Oceans and Oceanic Processes},
+  year      = {2000},
+  publisher = {Academic Press},
+  isbn      = {9780124340688},
+}
+
+@Comment{jabref-meta: databaseType:biblatex;}
