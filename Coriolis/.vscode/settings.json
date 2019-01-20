@@ -1,4 +1,23 @@
 {
-    "python.linting.enabled": true,
-    "python.pythonPath": "/home/nick/.virtualenvs/coriolis/bin/python"
+    "python.pythonPath": "/home/nick/.virtualenvs/coriolis/bin/python",
+    "python.linting.pep8Enabled": true,
+    "python.linting.pylintPath": "/home/nick/.virtualenvs/coriolis/bin/pylint",
+    "python.linting.pylintArgs": [
+            "--load-plugins",
+            "pylint_django"
+        ],
+    "python.linting.pylintEnabled": true,
+    "editor.rulers": [
+        80,
+        120
+    ],
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        ".vscode": true,
+        "**/*.pyc": true
+    },
 }
