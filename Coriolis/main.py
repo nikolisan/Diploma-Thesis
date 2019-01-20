@@ -1,9 +1,10 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 import gui
 import calculate_traj
+
 
 class MainUiClass(QtWidgets.QMainWindow, gui.Ui_MainWindow):
     def __init__(self):
@@ -37,15 +38,17 @@ class MainUiClass(QtWidgets.QMainWindow, gui.Ui_MainWindow):
         v0 = self.vSpin.value()
 
         if v0 == 0 and u0 == 0:
-            QtWidgets.QMessageBox.critical(self, 'Error', 'Please set different initial velocity.')
+            QtWidgets.QMessageBox.critical(
+                self, 'Error', 'Please set different initial velocity.')
         elif phi == 0:
             QtWidgets.QMessageBox.critical(self, 'Error', 'Please set different φ.\n'
-                                                      'Coriolis force cannot be calculated on the equator.')
+                                           'Coriolis force cannot be calculated on the equator.')
         else:
             self.calculateBtn.setEnabled(False)
             self.showBtn.setEnabled(False)
             self.stopBtn.setEnabled(True)
-            self.computationThread = ThreadClass(omega, numSteps, phi, radius, x0, y0, u0, v0)
+            self.computationThread = ThreadClass(
+                omega, numSteps, phi, radius, x0, y0, u0, v0)
 
             self.stopBtn.clicked.connect(self.computationThread.terminate)
 
@@ -64,7 +67,8 @@ class MainUiClass(QtWidgets.QMainWindow, gui.Ui_MainWindow):
         self.fEdit.setText('{0:1.2e}'.format(f))
         self.rossbyEdit.setText('{0:1.2e}'.format(Ro))
         self.tEdit.setText('{0:1.2f}'.format(Th))
-        QtWidgets.QMessageBox.information(self, 'Done', 'Calculations are completed!')
+        QtWidgets.QMessageBox.information(
+            self, 'Done', 'Calculations are completed!')
         self.show_plot()
 
     def about(self):
@@ -72,17 +76,22 @@ class MainUiClass(QtWidgets.QMainWindow, gui.Ui_MainWindow):
                                                          'the effect of the fictitious force, Coriolis. \n'
                                                          'Created by: Nick Andreakos')
 
-    def closeEvent(self, event):
+    def close_dialog(self):
         reply = QtWidgets.QMessageBox.question(
             self, "Close",
             "Are you sure you want to quit?",
             QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
             QtWidgets.QMessageBox.No)
-
         if reply == QtWidgets.QMessageBox.Yes:
+            return True
+        elif reply == QtWidgets.QMessageBox.No:
+            return False
+
+    def closeEvent(self, event):
+        if self.close_dialog():
             app.quit()
         else:
-            pass
+            event.ignore()
 
 
 class ThreadClass(QtCore.QThread):
