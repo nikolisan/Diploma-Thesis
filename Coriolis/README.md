@@ -39,6 +39,6 @@
 - Download
 	- [Mirror 1](https://www.dropbox.com/s/z9ahsfz124hjuuw/coriolis.exe?dl=0)
 	- [Mirror 2](/#)
-- [Source](https://github.com/nikolisan/diplwmatiki/tree/master/Coriolis/python)
+- [Source](Coriolis)
 
 Για οποιοδήποτε πρόβλημα αφήστε μήνυμα στη [σελίδα](https://github.com/nikolisan/diplwmatiki/issues), επιλέγοντας ***New Issue***.
