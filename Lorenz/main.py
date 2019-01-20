@@ -44,23 +44,26 @@ class MyApp(QtWidgets.QMainWindow, gui.Ui_MainWindow):
         self.saveBtn.clicked.connect(self.save_fig)
         self.aniSave_Action.triggered.connect(self.save_fig)
         self.about_Action.triggered.connect(self.about)
-        self.close_Action.triggered.connect(lambda r: QtWidgets.QApplication.instance().quit())
+        self.close_Action.triggered.connect(
+            lambda r: QtWidgets.QApplication.instance().quit())
         self.initialPointsTbl.doubleClicked.connect(self.delete_point)
 
     def about(self):
         QtWidgets.QMessageBox.information(self, 'About', 'An interactive plotter for the Lorenz System. \n'
                                                          'Coded by: Nick Andreakos, 2018')
+
     def delete_point(self):
-        rows = sorted(set(index.row() for index in self.initialPointsTbl.selectedIndexes()))
+        rows = sorted(set(index.row()
+                          for index in self.initialPointsTbl.selectedIndexes()))
         for row in rows:
             x = float(self.initialPointsTbl.item(row, 0).text())
             y = float(self.initialPointsTbl.item(row, 1).text())
             z = float(self.initialPointsTbl.item(row, 2).text())
             rmitem = [x, y, z]
-            self.initPoints = [point for point in self.initPoints if rmitem != point]
+            self.initPoints = [
+                point for point in self.initPoints if rmitem != point]
             self.initialPointsTbl.removeRow(row)
 
- 
     def calculate(self):
         if not self.initPoints == []:
             self.playBtn.setEnabled(True)
@@ -74,7 +77,8 @@ class MyApp(QtWidgets.QMainWindow, gui.Ui_MainWindow):
             self.calculateBtn.setText('Restart')
 
         else:
-            QtWidgets.QMessageBox.critical(self, 'Error', 'No initial points selected.')
+            QtWidgets.QMessageBox.critical(
+                self, 'Error', 'No initial points selected.')
 
     def addPoint(self):
         x = self.x1Spin.value()
@@ -86,9 +90,12 @@ class MyApp(QtWidgets.QMainWindow, gui.Ui_MainWindow):
             print('New point added.')
             rowPosition = len(self.initPoints) - 1
             self.initialPointsTbl.insertRow(rowPosition)
-            self.initialPointsTbl.setItem(rowPosition, 0, QtWidgets.QTableWidgetItem(str(x)))
-            self.initialPointsTbl.setItem(rowPosition, 1, QtWidgets.QTableWidgetItem(str(y)))
-            self.initialPointsTbl.setItem(rowPosition, 2, QtWidgets.QTableWidgetItem(str(z)))
+            self.initialPointsTbl.setItem(
+                rowPosition, 0, QtWidgets.QTableWidgetItem(str(x)))
+            self.initialPointsTbl.setItem(
+                rowPosition, 1, QtWidgets.QTableWidgetItem(str(y)))
+            self.initialPointsTbl.setItem(
+                rowPosition, 2, QtWidgets.QTableWidgetItem(str(z)))
         else:
             QtWidgets.QMessageBox.critical(self, 'Error', 'The point you try to add already \n'
                                                           'exists.')
@@ -97,11 +104,12 @@ class MyApp(QtWidgets.QMainWindow, gui.Ui_MainWindow):
     def save_fig(self):
         try:
             file_utils.save_fig(self.fig)
-            QtWidgets.QMessageBox.information(self, 'Success', 'The figure saved.')
+            QtWidgets.QMessageBox.information(
+                self, 'Success', 'The figure saved.')
         except Exception as err:
-            QtWidgets.QMessageBox.critical(self, 'Error saving figure', err.args[0])
+            QtWidgets.QMessageBox.critical(
+                self, 'Error saving figure', err.args[0])
             print(err)
-
 
     def rotation_changed(self):
         self.rotval = self.rotSpeedBtn.value()
@@ -124,8 +132,10 @@ class MyApp(QtWidgets.QMainWindow, gui.Ui_MainWindow):
         self.widget.canvas.ax.set_ylim(-50, 50)
         self.widget.canvas.ax.set_zlim(-50, 50)
         colors = plt.cm.jet(np.linspace(0, 1, len(self.initPoints)))
-        self.lines = sum([self.widget.canvas.ax.plot([], [], [], '-',c=color, lw=1) for color in colors], [])
-        self.pts = sum([self.widget.canvas.ax.plot([], [], [], '.', c=color) for color in colors],[])
+        self.lines = sum([self.widget.canvas.ax.plot(
+            [], [], [], '-', c=color, lw=1) for color in colors], [])
+        self.pts = sum([self.widget.canvas.ax.plot(
+            [], [], [], '.', c=color) for color in colors], [])
         self.widget.canvas.draw()
 
     def setup_animation(self):
@@ -166,18 +176,19 @@ class MyApp(QtWidgets.QMainWindow, gui.Ui_MainWindow):
         self.init_figure()
         self.frames = int(len(self.x_t[0])/self.anispeed)
         if self.stopped:
-            self.widget.canvas.ax.view_init(30,50)
+            self.widget.canvas.ax.view_init(30, 50)
             self.widget.canvas.draw()
             self.stopped = False
             self.playBtn.setText('Stop')
             self.aniPlay_Action.setText('Stop')
             try:
-                if len(self.x_t )> 0:
+                if len(self.x_t) > 0:
                     self.anim = animation.FuncAnimation(self.widget.canvas.ax.get_figure(),
                                                         self.update_figure,
                                                         init_func=self.setup_animation,
                                                         frames=self.frames,
-                                                        fargs=[self.rotval, self.anispeed],
+                                                        fargs=[
+                                                            self.rotval, self.anispeed],
                                                         interval=50, repeat=False)
 
             except Exception as err:
