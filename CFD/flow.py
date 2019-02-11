@@ -35,12 +35,12 @@ Ny = 50  # Number of cells in y direction
 # Variables for run
 days = 0.5
 
-
 # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # # # #              Calculations           # # # # #
 # * Calculate the water surface after given  days * #
 x, y, dx, dy, dt = water_level.variables(Nx, Ny, Lx, Ly, c, T, A)
-heta, u_, t_= water_level.calculate_water_level(Lx, Nx, Ny, dx, dy, dt, c, days, (50, 25))
+timeseriesPoint = (50, 25)
+heta, u_, t_= water_level.calculate_water_level(Lx, Nx, Ny, dx, dy, dt, c, days, P)
 
 # # # # # # # # # # # # # # # # # # # # # # #
 # # # #        Plotting results     # # # # #
