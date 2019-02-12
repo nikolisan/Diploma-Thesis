@@ -17,6 +17,10 @@ import numpy
 import plotting
 import water_level
 
+import pickle
+import os
+isWaterProf = os.path.isfile("waterProf.pickle")
+
 # Dimensions: space in (m), time in (sec)
 Lx = 25000  # length in x direction
 Ly = 25000  # length in y direction
@@ -39,8 +43,26 @@ days = 0.5
 # # # #              Calculations           # # # # #
 # * Calculate the water surface after given  days * #
 x, y, dx, dy, dt = water_level.variables(Nx, Ny, Lx, Ly, c, T, A)
-timeseriesPoint = (50, 25)
-heta, u_, t_= water_level.calculate_water_level(Lx, Nx, Ny, dx, dy, dt, c, days, timeseriesPoint)
+if not isWaterProf:
+    timeseriesPoint = (50, 25)
+    heta, h_, t_= water_level.calculate_water_level(Lx, Nx, Ny, dx, dy, dt, c, days, timeseriesPoint)
+    waterProfToSave = {
+        "heta": heta,
+        "h_": h_,
+        "t_": t_
+    }
+    with open('waterProf.pickle', 'wb') as f:
+        # Pickle the 'waterProf' dictionary using the highest protocol available.
+        pickle.dump(waterProfToSave, f, pickle.HIGHEST_PROTOCOL)
+        print('Water profile result saved')
+else:
+    print('Water profile result loading')
+    with open('waterProf.pickle', 'rb') as f:
+        # The protocol version used is detected automatically, so we do not
+        # have to specify it.
+        waterProf = pickle.load(f)
+        heta, h_, t_ = waterProf.values()
+
 
 # # # # # # # # # # # # # # # # # # # # # # #
 # # # #        Plotting results     # # # # #
@@ -48,5 +70,5 @@ heta, u_, t_= water_level.calculate_water_level(Lx, Nx, Ny, dx, dy, dt, c, days,
 plotting.contour_plot(x, y, heta)
 
 import matplotlib.pyplot as plt
-plt.plot(t_, u_)
+plt.plot(t_, h_)
 plt.show()
