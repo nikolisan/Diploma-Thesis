@@ -1,24 +1,32 @@
 import numpy
 import sys
-
+import velocity
 
 def sin_wave(t, prop=0.0):
     global A
     return A * numpy.sin(2 * numpy.pi * t / T - prop)
 
 
-def variables(Nx, Ny, Lx, Ly, c, Tin, A0):
-    global A, T
+def variables(Nx, Ny, Lx, Ly, c, g_, H, Tin, A0):
+    global A, T, g
+    g = g_
     A = A0
     T = Tin
     x = numpy.linspace(0, Lx, Nx + 3)
     y = numpy.linspace(0, Ly, Ny + 2)
     dx = Lx / Nx
     dy = Ly / Ny
+    # dt = numpy.sqrt(2*dx/(g*H)) # from CFL condition
     dt = round(dx * dy / c / (dx + dy))
     print('Calculated Dx: {}'.format(dx))
     print('Calculated Dy: {}'.format(dy))
     print('Calculated Dt: {}'.format(dt))
+    if not dt <= numpy.sqrt(2*dx/(g*H)) and dt <= numpy.sqrt(2*dy/(g*H)):
+        print("CFL criterion not meet and the solution will be unstable")
+        f = numpy.sqrt(2*dx/(g*H))
+        s = numpy.sqrt(2*dx/(g*H))
+        print(dt, f, s)
+
     if (T / dt) < 10:  # CFL Condition
         print('The calculated Dt is not at least an order\n'
               'of magnitude less than the tidal wave period.\n'
@@ -27,7 +35,7 @@ def variables(Nx, Ny, Lx, Ly, c, Tin, A0):
     return x, y, dx, dy, dt
 
 
-def calculate_water_level(Lx, Nx, Ny, dx, dy, dt, c, days, P=None):
+def calculate_water_level(Lx, Ly, Nx, Ny, dx, dy, dt, c, days, P=None):
     # P : tuple of a point's coord to get the time series
     print('Calculating water level profile for {} days...'.format(days))
     # Useful variables
@@ -42,6 +50,8 @@ def calculate_water_level(Lx, Nx, Ny, dx, dy, dt, c, days, P=None):
 
     # For time series plot
     u_ = []
+    uvel_ = []
+    vvel_ = []
     t_ = []
 
     t = 0
@@ -67,11 +77,11 @@ def calculate_water_level(Lx, Nx, Ny, dx, dy, dt, c, days, P=None):
 
             # Open sea boundary (p. 73)
             for j in range(Nx + 2):
-                if t > 2*(Lx / c):  # if the reflected wave have travelled back
+                if t-dt > dy/c:  # if the reflected wave have travelled back
                     # to the open sea boundary
                     u1 = u_1[0, j] - sin_wave(t - dt)  # (2.38)
-                    u2 = u_1[1, j] - sin_wave(t - dt, dx / Lx)  # (2.39)
-                    u1 = u1 + dt / dx * c * (u2 - u1)  # (2.42)
+                    u2 = u_1[1, j] - sin_wave(t - dt, dy / Ly)  # (2.39)
+                    u1 = u1 + dt / dy * c * (u2 - u1)  # (2.42)
                 else:
                     u1 = 0
                 u[0, j] = u1 + sin_wave(t)
@@ -94,6 +104,14 @@ def calculate_water_level(Lx, Nx, Ny, dx, dy, dt, c, days, P=None):
             u_2 = numpy.copy(u_1)
             u_1 = numpy.copy(u)
 
+            u_vel, v_vel = velocity.velocity(dx, dy, dt, g, u, Nx, Ny)
+            if P is not None:
+                xp = P[0]
+                yp = P[1]
+                uvel_.append(u_vel[xp, yp])
+                vvel_.append(v_vel[xp, yp])
+
             if t > 3600 * 24 * days:
                 break
-    return u, u_, t_
+ 
+    return u, u_vel, v_vel, u_, uvel_, vvel_, t_

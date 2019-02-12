@@ -19,17 +19,20 @@ import water_level
 
 import pickle
 import os
-isWaterProf = os.path.isfile("waterProf.pickle")
+import math
+import time
+filename = 'b4.pickle'
+isWaterProf = os.path.isfile(filename)
 
 # Dimensions: space in (m), time in (sec)
 Lx = 25000  # length in x direction
-Ly = 25000  # length in y direction
+Ly = 40000  # length in y direction
 H = 50      # depth
 g = 9.807   # gravity acceleration
 
 # Incoming Wave properties
 T = 4000             # incoming tidal wave period -> 12h, 25h
-A = 0.4                # wave amplitude (m) -> 0.4m
+A = 0.4               # wave amplitude (m) -> 0.4m
 c = numpy.sqrt(g * H)   # wave celerity
 
 # Discretization variables
@@ -37,38 +40,44 @@ Nx = 50  # Number of cells in x direction
 Ny = 50  # Number of cells in y direction
 
 # Variables for run
-days = 0.5
+days = 1
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # # # #              Calculations           # # # # #
 # * Calculate the water surface after given  days * #
-x, y, dx, dy, dt = water_level.variables(Nx, Ny, Lx, Ly, c, T, A)
+x, y, dx, dy, dt = water_level.variables(Nx, Ny, Lx, Ly, c, g, H, T, A)
 if not isWaterProf:
     timeseriesPoint = (50, 25)
-    heta, h_, t_= water_level.calculate_water_level(Lx, Nx, Ny, dx, dy, dt, c, days, timeseriesPoint)
+    heta, u_vel, v_vel, h_, uvel_, vvel_, t_ = water_level.calculate_water_level(Lx, Ly, Nx, Ny, dx, dy, dt, c, days, timeseriesPoint)
     waterProfToSave = {
         "heta": heta,
         "h_": h_,
-        "t_": t_
+        "t_": t_,
+        "u_vel": u_vel,
+        "v_vel": v_vel,
+        "uvel_": uvel_,
+        "vvel_": vvel_
     }
-    with open('waterProf.pickle', 'wb') as f:
+    with open(filename, 'wb') as f:
         # Pickle the 'waterProf' dictionary using the highest protocol available.
         pickle.dump(waterProfToSave, f, pickle.HIGHEST_PROTOCOL)
-        print('Water profile result saved')
+        print('Results saved')
 else:
-    print('Water profile result loading')
-    with open('waterProf.pickle', 'rb') as f:
+    print('Results loading')
+    with open(filename, 'rb') as f:
         # The protocol version used is detected automatically, so we do not
         # have to specify it.
         waterProf = pickle.load(f)
-        heta, h_, t_ = waterProf.values()
+        heta, h_, t_, u_vel, v_vel, uvel_, vvel_ = waterProf.values()
 
 
 # # # # # # # # # # # # # # # # # # # # # # #
 # # # #        Plotting results     # # # # #
-# * Plot the contour of the water surface * #
-plotting.contour_plot(x, y, heta)
-
-import matplotlib.pyplot as plt
-plt.plot(t_, h_)
-plt.show()
+# # # # # # # # # # # # # # # # # # # # # # #
+plotting.final_2d(x, y, heta, v_vel, u_vel, filename)
+# time.sleep(10)
+plotting.contour(x, y, u_vel, filename)
+# time.sleep(10)
+plotting.timeseries(t_, h_, 'Χρονοσειρά ανύψωσης ελεύθερης επιφάνειας', 'Χρόνος (s)', 'Ανύψωση (m)', filename+'_h')
+# time.sleep(10)
+plotting.timeseries(t_, uvel_, 'Χρονοσειρά ταχύτητας', 'Χρόνος (s)', 'Ταχύτητα (m/s)', filename+'_u')
