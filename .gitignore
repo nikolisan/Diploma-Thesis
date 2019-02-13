@@ -123,7 +123,6 @@ dmypy.json
 *.ist
 *.acn
 *.acr
-*.lol
 *.alg
 *.bbl
 *.blg
@@ -140,23 +139,3 @@ dmypy.json
 *.out
 *.synctex.gz
 *.fdb_latexmk
-
-"*.aux",
-            "*.bbl",
-            "*.blg",
-            "*.idx",
-            "*.ind",
-            "*.lof",
-            "*.lot",
-            "*.out",
-            "*.toc",
-            "*.acn",
-            "*.acr",
-            "*.alg",
-            "*.glg",
-            "*.glo",
-            "*.gls",
-            "*.ist",
-            "*.fls",
-            "*.log",
-            "*.fdb_latexmk"
