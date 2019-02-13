@@ -24,7 +24,7 @@
 \usepackage{gensymb}
 \usepackage{enumitem}
 \usepackage{url}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 \usepackage{csquotes}
 
 \input{listings}
@@ -47,7 +47,7 @@
 %%%%% EDIT THESE %%%%%%
 \newcommand{\theauthor}{Νικόλαος Ανδρεάκος\xspace}
 \newcommand{\thetitle}{Μοντελοποίηση κυκλοφορίας σε κόλπο και άλλα προβλήματα\xspace}
-\newcommand{\thedate}{Πάτρα, 2018\xspace}
+\newcommand{\thedate}{Πάτρα, 2019\xspace}
 
 \newcommand{\tmima}{Τμήμα πολιτικών Μηχανικών\xspace}
 \newcommand{\proff}{Γεώργιος Μ. Χορς\xspace}
@@ -56,7 +56,7 @@
 
 
 %Graphics preamble
-\usepackage{graphicx}  % Allows you to import images.
+\usepackage{graphicx, subfigure}  % Allows you to import images.
 \usepackage{float} %Allows for control of float positions.
 \graphicspath{ {images/} } %folder where images are saved (relative to path)
 
@@ -124,8 +124,20 @@
 	\section*{Πρόλογος}
 		\thispagestyle{pagenum}
 		\addcontentsline{toc}{section}{\numberline{}Πρόλογος}
-		\lipsum[3-5]
-	\cleardoublepage
+		Η παρούσα διπλωματική εργασία εκπονήθηκε στα πλαίσια του προπτυχιακού προγράμματος Πολιτικών Μηχανικών, του Πανεπιστημίου Πατρών. Κύριος στόχος της εργασίας είναι η μοντελοποιήση της κυκλοφορίας σε έναν εξιδανικευμένο κόλπο, με κύρια διέγερση ένα παλιρροϊκό κύμα. Ακόμα, αναφέρονται και κάποια άλλα στοιχεία πολύ χρήσιμα για την επιστήμη του υδραυλικού πολιτικού μηχανικού, η φαινόμενη δύναμη \lat{Coriolis} και το σύστημα \lat{Lorenz}.
+
+		Κύριος, προσωπικός, στόχος μου ήταν η ανάπτυξη λογισμικού, με σύγχρονες προδιαγραφές, όπου να μπορεί να επιλύσει τα φαινόμενα που περιγράφονται στη διπλωματική εργασία επαρκώς, αλλά και ταχέως.
+
+		Εκτός από τις γνώσεις που έλαβα κατά τη διάρκεια υλοποίησης του λογισμικού και της συγγραφής της παρούσας διπλωματικής, το υλικό που παρουσιάζεται είναι ιδιαίτερα χρήσιμο σε κάποιον που ξεκινά να μελετά φαινόμενα κυκλοφορίας.
+
+		Σε αυτό το σημείο, θα ήθελα να ευχαριστήσω θερμά τον κ. Γεώργιο Χορς, Αναπληρωτή Καθηγητή, για την επιστημονική καθοδήγησή του, καθώς και την πολύτιμη βοήθεια που μου προσέφερε κατα τη διάρκεια εκπόνησης αυτής της εργασίας. Η παρουσία του κρίθηκε απαραίτητη στα τελευταία χρόνια των σπουδών μου. Ακόμα, είναι απαραίτητο να αναφερθώ και να ευχαριστήσω την οικογένειά μου και τους φίλους μου στάθηκαν δίπλα μου και με υποστήριξαν στο έργο μου.
+		\vspace{15mm}
+		\begin{flushright}
+			Νικόλαος Κ. Ανδρεάκος\\
+			Πάτρα, 2019
+		\end{flushright}
+
+		\cleardoublepage
 
 	\section*{Περίληψη}
 		\thispagestyle{pagenum}
@@ -167,7 +179,8 @@
 	\section{Δύναμη \lat{Coriolis}}
 		\input{coriolis.tex}
 	\cleardoublepage
-	\section{Μοντελοποίηση Παλιρροϊκής Ροής}
+	\section{Μοντελοποίηση κυκλοφορίας σε ανοιχτό από το ένα άκρο κόλπο}
+		\input{cfd.tex}
 	\cleardoublepage
 	\nocite{*}
 	\lat{\bibliography{biblio}}
