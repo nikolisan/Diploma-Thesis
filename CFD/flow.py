@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # -----------------------------------------------------------------
 # Model of a tidal flow in a closed gulf,
 # with one open sea boundary.
@@ -13,6 +14,7 @@
 #   * Central differences in space
 #   * Central differences in space & time for the wave
 # -----------------------------------------------------------------
+
 import numpy
 import plotting
 import water_level
@@ -21,7 +23,7 @@ import pickle
 import os
 import math
 import time
-filename = 'b4.pickle'
+filename = '5a'
 isWaterProf = os.path.isfile(filename)
 
 # Dimensions: space in (m), time in (sec)
@@ -36,18 +38,18 @@ A = 0.4               # wave amplitude (m) -> 0.4m
 c = numpy.sqrt(g * H)   # wave celerity
 
 # Discretization variables
-Nx = 50  # Number of cells in x direction
-Ny = 50  # Number of cells in y direction
+Nx = 25  # Number of cells in x direction
+Ny = 25  # Number of cells in y direction
 
 # Variables for run
-days = 1
+days = 5
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # # # #              Calculations           # # # # #
 # * Calculate the water surface after given  days * #
 x, y, dx, dy, dt = water_level.variables(Nx, Ny, Lx, Ly, c, g, H, T, A)
 if not isWaterProf:
-    timeseriesPoint = (50, 25)
+    timeseriesPoint = (25, 12)
     heta, u_vel, v_vel, h_, uvel_, vvel_, t_ = water_level.calculate_water_level(Lx, Ly, Nx, Ny, dx, dy, dt, c, days, timeseriesPoint)
     waterProfToSave = {
         "heta": heta,

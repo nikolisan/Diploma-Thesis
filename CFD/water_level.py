@@ -1,6 +1,7 @@
 import numpy
 import sys
 import velocity
+from math import sqrt
 
 def sin_wave(t, prop=0.0):
     global A
@@ -17,7 +18,7 @@ def variables(Nx, Ny, Lx, Ly, c, g_, H, Tin, A0):
     dx = Lx / Nx
     dy = Ly / Ny
     # dt = numpy.sqrt(2*dx/(g*H)) # from CFL condition
-    dt = round(dx * dy / c / (dx + dy))
+    dt = round(sqrt(2) * dx * dy / c / (dx + dy))
     print('Calculated Dx: {}'.format(dx))
     print('Calculated Dy: {}'.format(dy))
     print('Calculated Dt: {}'.format(dt))
@@ -57,13 +58,13 @@ def calculate_water_level(Lx, Ly, Nx, Ny, dx, dy, dt, c, days, P=None):
     t = 0
     n = 0
     # Step 1
-    t = t + dt
-    n = n + 1
-    for i in range(1, Ny + 1):
-        for j in range(1, Nx + 2):
-            u_xx = u_1[i + 1, j] - 2 * u_1[i, j] + u_1[i - 1, j]
-            u_yy = u_1[i, j + 1] - 2 * u_1[i, j] + u_1[i, j - 1]
-            u[i, j] = u_1[i, j] + 0.5 * Cxs * u_xx + 0.5 * Cys * u_yy
+    # t = t + dt
+    # n = n + 1
+    # for i in range(1, Ny + 1):
+    #     for j in range(1, Nx + 2):
+    #         u_xx = u_1[i + 1, j] - 2 * u_1[i, j] + u_1[i - 1, j]
+    #         u_yy = u_1[i, j + 1] - 2 * u_1[i, j] + u_1[i, j - 1]
+    #         u[i, j] = u_1[i, j] + 0.5 * Cxs * u_xx + 0.5 * Cys * u_yy
 
     # Loop Start
     while True:

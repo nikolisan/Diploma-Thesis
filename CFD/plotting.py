@@ -1,6 +1,6 @@
+# -*- coding: utf-8 -*-
 from matplotlib import pyplot as plt
 from matplotlib.pyplot import cm
-
 
 def final_2d(x, y, u, v_vel, u_vel, name):
     plt.contourf(x, y, u, alpha=0.7, cmap=cm.coolwarm)
