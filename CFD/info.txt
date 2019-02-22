@@ -1,0 +1,7 @@
+montela 1-3
+t = 8220 -> elaxisto
+t = 10220 -> megisto
+
+montela 2-4-5
+t=12207 -> elaxisto
+t=10218 -> megisto

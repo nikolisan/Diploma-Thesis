@@ -3,6 +3,8 @@ import sys
 import velocity
 from math import sqrt
 
+import plot_diag
+
 def sin_wave(t, prop=0.0):
     global A
     return A * numpy.sin(2 * numpy.pi * t / T - prop)
@@ -36,7 +38,7 @@ def variables(Nx, Ny, Lx, Ly, c, g_, H, Tin, A0):
     return x, y, dx, dy, dt
 
 
-def calculate_water_level(Lx, Ly, Nx, Ny, dx, dy, dt, c, days, P=None):
+def calculate_water_level(Lx, Ly, Nx, Ny, dx, dy, dt, c, days, P=None, BreakPoint=False):
     # P : tuple of a point's coord to get the time series
     print('Calculating water level profile for {} days...'.format(days))
     # Useful variables
@@ -67,6 +69,7 @@ def calculate_water_level(Lx, Ly, Nx, Ny, dx, dy, dt, c, days, P=None):
     #         u[i, j] = u_1[i, j] + 0.5 * Cxs * u_xx + 0.5 * Cys * u_yy
 
     # Loop Start
+    breakVal = 0
     while True:
             t = t + dt
             n = n + 1
@@ -111,6 +114,47 @@ def calculate_water_level(Lx, Ly, Nx, Ny, dx, dy, dt, c, days, P=None):
                 yp = P[1]
                 uvel_.append(u_vel[xp, yp])
                 vvel_.append(v_vel[xp, yp])
+
+            # Koilies
+            # t = 8220 1a,2a
+            # t = 
+            if BreakPoint:
+                # Y-AXIS : u[:,meso]
+                # X-AXIS : y = numpy.linspace(0, Ly, Ny + 2)
+                x_axis = numpy.linspace(0, Ly, Ny + 2)
+                if t == 8220:
+                    # Models 1&3 local least wave height
+                    # Plot something
+                    # u -> water_level
+                    _u_plot = u[:, 25]
+                    print('first: ', len(_u_plot))
+                    plot_diag.newPlot(x_axis, _u_plot, 'b', 'Άμπωτη')
+                    breakVal += 1
+                elif t == 10220:
+                    # Models 1&3 local max wave height
+                    # Plot something
+                    _u_plot = u[:, 25]
+                    print('second: ', len(_u_plot))
+                    plot_diag.newPlot(x_axis, _u_plot, 'r', 'Πλημμυρίδα')
+                    breakVal += 1
+                elif t == 12207:
+                    # Models 2-4-5 local least wave height
+                    # Plot something
+                    _u_plot = u[:, 12]
+                    print('third: ', len(_u_plot))
+                    plot_diag.newPlot(x_axis, _u_plot, 'b', 'Άμπωτη')
+                    breakVal += 1
+                elif t == 10218:
+                    # Models 2-4-5 local least wave height
+                    # Plot something
+                    _u_plot = u[:, 12]
+                    print('fourth: ', len(_u_plot))
+                    plot_diag.newPlot(x_axis, _u_plot, 'r', 'Πλημμυρίδα')
+                    breakVal += 1
+
+                if breakVal == 2:
+                    plot_diag.plotShow('Μοντέλα 1-3 (Nx=Ny=50)', 'Μήκος Κόλπου', 'Ύψος ελευθ. επιφάνειας')
+                    break
 
             if t > 3600 * 24 * days:
                 break
