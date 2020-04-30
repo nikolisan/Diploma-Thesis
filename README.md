@@ -1,12 +1,12 @@
 # Diploma Thesis
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
-### Summary
+## Summary
 In this repo, I maintain all the code and the text related to my diploma thesis for my degree in Civil Engineering at University of Patras.
 The main focus of this thesis is the computational modelling of the flow in a reservoir. However there are two more modules. One about the computation and a simple visualization of the Coriolis Effect on a parcel moving on a 2D plane, and the other a computation and a 3D visualization of the Lorenz system.
 All code is written in Python3 and the GUI is made with QT5.
 
-### Abstract
+## Abstract
 [**Abstract PDF**](abstract.pdf)
 
 This dissertation is divided into three main parts.
@@ -19,10 +19,10 @@ In the third and final chapter, the circulation in a bay of idealized dimensions
 
 The code for all three chapters was written in Python mainly because of the flexibility and the scripting nature it provides over more robust scientific languages like Fortran.
 
-### Table of Contents
+## Table of Contents
 * [**Coriolis Effect**](Coriolis)
 * [**Lorenz System**](Lorenz)
 * [**Flow Modelling**](CFD)
 
-### Authors
+## Authors
 * **Nick Andreakos** - *Initial Work* - [nikolisan](https://github.com/nikolisan)
